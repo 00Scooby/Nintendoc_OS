@@ -1,19 +1,23 @@
-# 🎮 Nintendoc Battery Activation Tool v0.1
+# 🎮 Nintendoc Battery Activation Tool & Charger v1.0
 
-Das **Nintendoc Battery Activation Tool** ist ein massgeschneidertes Diagnose- und Aktivierungswerkzeug für Nintendo Switch Akkus (Joy-Con, Switch Lite, Switch V1/V2 & OLED). Es erlaubt das Auslesen von Spannungs- und Stromwerten in Echtzeit und hilft dabei, tiefentladene Akkus wieder "wachzuküssen".
+Das **Nintendoc Battery Activation Tool** ist ein massgeschneidertes Diagnose- und Aktivierungswerkzeug für Nintendo Switch Akkus (Joy-Con, Switch Lite, Switch V1/V2 & OLED). Es erlaubt das Auslesen von Spannungs- und Stromwerten in Echtzeit, hilft dabei, tiefentladene Akkus wieder "wachzuküssen", und fungiert als smarter Kapazitäts-Tester.
 
 ## ✨ Features
 * **Multi-Connector Support:** Direkte Anschlüsse für Joy-Con, Switch Lite und Standard/OLED Batterien.
-* **Live-Monitoring:** 0.96" OLED-Display zur Anzeige von Spannung (V) und Stromstärke (mA).
-* **High Precision:** Nutzt den INA219 Sensor für exakte Messungen über den I2C-Bus.
+* **Live-Monitoring:** 0.96" OLED-Display zur Anzeige von Spannung (V), Stromstärke (mA) und Leistung (mW) in Echtzeit.
+* **Intelligente Prozentanzeige:** Angepasst an Li-Ion Zellen (3.0V - 4.2V) mit integriertem Software-Low-Pass-Filter für eine absolut ruhige und flackerfreie Anzeige.
+* **Live Coulomb Counter:** Zählt präzise die eingeladenen Milliamperestunden (mAh) mit. Perfekt, um die echte Restkapazität und Gesundheit alter Akkus zu testen!
+* **Smart Status:** Automatische Erkennung von *Laden...*, *Entladen*, *Akku Voll* (CC/CV Ladeverfahren-Erkennung) und *Standby*.
+* **OLED Paging System:** Die unteren Diagnosewerte rotieren alle 5 Sekunden butterweich, um das kleine Display übersichtlich zu halten, ohne den I2C-Bus zu blockieren.
+* **Custom Boot-Sequence:** Startet mit einem Nintendoc-Logo und einem sauberen Splash-Screen.
+* **RAM-optimiert:** Verwendet Pointers (`const char*`) und das `F()`-Makro, um den knappen SRAM (2 KB) des ATmega328P zu schonen und I2C-Crashes zu verhindern.
 * **USB-C Powered:** Einfache Stromversorgung über ein Standard-USB-C Kabel.
-* **Custom Design:** Kompakter Formfaktor mit stylischem Nintendoc-Branding.
 
 ## 🛠 Hardware & Specs
-* **MCU:** ATmega328P-AU (Arduino Uno Architektur)
-* **Sensor:** Adafruit INA219 (High-Side DC Current Sensor)
+* **MCU:** ATmega328P-AU (läuft auf 16 MHz via externem Quarz)
+* **Sensor:** Adafruit INA219 (High-Side DC Current Sensor, I2C)
 * **Display:** 0.96" SSD1306 OLED (I2C, 128x64 Pixel, Blau auf Schwarz)
-* **Power:** Integrierter Laderegler für sicheres Handling.
+* **Power:** Integrierter Laderegler für sicheres Handling und CC/CV-Ladung.
 
 ## 🚀 Installation & Flash-Anleitung
 
@@ -24,23 +28,27 @@ Dieses Projekt wurde mit **VS Code** und **PlatformIO** entwickelt.
 2. Das **PlatformIO IDE** Plugin hinzufügen.
 3. Repository klonen oder herunterladen.
 
-### 2. Hardware flashen
+### 2. Hardware flashen (WICHTIG!)
 Verbinde deinen **USBasp Programmer** mit dem 6-Pin ICSP Header (`J1`) auf dem Board:
-* **VCC -> VCC**
+* **VCC -> VCC** (Wichtig: VCC weglassen, falls das Board bereits über USB-C mit Strom versorgt wird!)
 * **GND -> GND**
 * **MOSI, MISO, SCK, RESET** entsprechend markiert.
 
-Klicke in VS Code unten in der blauen Leiste auf den Pfeil (**Upload**). PlatformIO kümmert sich um die Treiber und den Flash-Vorgang.
+**Schritt A: 16 MHz Fuses setzen**
+Da das Board über ISP (USBasp) programmiert wird und keinen eigenen USB-to-Serial-Wandler besitzt, muss der Chip zuerst auf den externen 16-MHz-Quarz konfiguriert werden. Führe dazu in PlatformIO einmalig den Task `Burn Bootloader` aus.
 
-## 📦 Teileliste (BOM)
-Neben der bestückten Platine von JLCPCB werden folgende Komponenten benötigt:
-* 0.96" OLED I2C Display (SSD1306)
-* USBasp AVR Programmer (zum Flashen)
-* Joy-Con / Switch Battery Connectors (AliExpress/Ersatzteile)
-* Schiebeschalter (SS12D00G3)
+**Schritt B: Code Upload**
+Damit `avrdude` beim anschliessenden Code-Upload nicht an den durch den Bootloader gesetzten Lock-Bits scheitert, muss in der `platformio.ini` zwingend das Erase-Flag (`-e`) gesetzt sein:
 
-## ⚖️ Disclaimer
-Dieses Projekt ist ein Community-Modding-Tool und steht in keiner Verbindung zu Nintendo. Die Nutzung erfolgt auf eigene Gefahr. Achten Sie beim Umgang mit Li-Ion Akkus immer auf die nötige Vorsicht!
-
----
-*Developed by Steven - 2026*
+```ini
+[env:uno]
+platform = atmelavr
+board = uno
+framework = arduino
+upload_protocol = usbasp
+upload_flags = -e
+lib_deps = 
+    adafruit/Adafruit SSD1306 @ ^2.5.9
+    adafruit/Adafruit GFX Library @ ^1.11.9
+    adafruit/Adafruit INA219 @ ^1.2.3
+```
