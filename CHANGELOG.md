@@ -5,6 +5,23 @@ Alle bemerkenswerten Änderungen an diesem Projekt werden in dieser Datei dokume
 Das Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/), 
 und dieses Projekt hält sich an [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-04-06
+
+### Added
+- **Pro English UI:** Komplett englische Benutzeroberfläche für einen professionelleren Look.
+- **Barber-Pole Progress Bar:** Animierter Ladebalken am unteren Displayrand für direktes optisches Feedback.
+- **Noise-Gate:** Rauschen um den Nullpunkt (-1 mA bis 2 mA) wird im Standby gnadenlos auf 0 gesetzt.
+- **Li-Ion Lookup-Table:** Smarte, nicht-lineare Berechnung der Batterieprozente anhand echter Spannungskurven (3.0V - 4.15V).
+
+### Changed
+- **Pure Plug & Play:** Fehleranfällige Profil-Auswahl entfernt. Der Code fokussiert sich jetzt 100% auf Live-Messung und Coulomb Counting, unabhängig vom angeschlossenen Akku-Typ.
+- **Highspeed Refresh:** Die Loop-Ausführung für Display und Sensor wurde von 4 FPS auf 10 FPS (100ms) hochgezogen, um die Animation flüssig zu halten.
+
+### Fixed
+- **Heavy-Duty Smoothing:** Der Software-Stossdämpfer wurde von 80/20 auf 95/5 angezogen. Strom (mA) und Leistung (mW) tanzen nicht mehr wild herum, sondern gleiten sauber.
+- **Prozent-Alignment-Bug:** Dynamische X-Koordinate für die Prozentanzeige hinzugefügt. Das `%`-Zeichen stürzt bei 100% (4 Zeichen Breite) nicht mehr auf die nächste Zeile ab.
+- **UI Alignment:** Seite 2 (Charged Cap.) wurde komplett linksbündig ausgerichtet, um den unruhigen zentrierten Look zu beheben.
+
 ## [1.0.0] - 2026-03-29
 
 ### Added
@@ -12,7 +29,7 @@ und dieses Projekt hält sich an [Semantic Versioning](https://semver.org/spec/v
 - **Display-Engine:** Ansteuerung des 0.96" SSD1306 OLED-Displays über I2C.
 - **Sensor-Integration:** Präzises Auslesen des Adafruit INA219 (Spannung, Strom, Leistung).
 - **Custom Boot-Sequence:** Startbildschirm mit Nintendoc-Logo (2 Sekunden) und Text-Splash (3 Sekunden).
-- **Live-Dashboard:** Anzeige der geglätteten Akku-Spannung und dynamischer Prozentanzeige (angepasst auf 3.0V - 4.2V Li-Ion Range).
+- **Live-Dashboard:** Anzeige der geglätteten Akku-Spannung und dynamischer Prozentanzeige.
 - **OLED Paging System:** Rotierendes Diagnose-Menü (alle 5 Sekunden) für mehr Übersichtlichkeit ohne I2C-Blockade.
 - **Coulomb Counter:** Echtzeit-Kapazitätszähler zur Messung der eingeladenen Milliamperestunden (mAh).
 - **Smart Status-Erkennung:** Automatische Statusanzeige ("Laden...", "Akku Voll", "Standby", "Entladen") basierend auf CC/CV-Ladekurve.

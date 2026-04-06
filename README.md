@@ -1,13 +1,15 @@
-# 🎮 Nintendoc Battery Activation Tool & Charger v1.0
+# 🎮 Nintendoc Battery Activation Tool & Charger v1.1
 
 Das **Nintendoc Battery Activation Tool** ist ein massgeschneidertes Diagnose- und Aktivierungswerkzeug für Nintendo Switch Akkus (Joy-Con, Switch Lite, Switch V1/V2 & OLED). Es erlaubt das Auslesen von Spannungs- und Stromwerten in Echtzeit, hilft dabei, tiefentladene Akkus wieder "wachzuküssen", und fungiert als smarter Kapazitäts-Tester.
 
 ## ✨ Features
 * **Multi-Connector Support:** Direkte Anschlüsse für Joy-Con, Switch Lite und Standard/OLED Batterien.
+* **Pro English UI:** Cleanes, linksbündiges Interface mit dynamischem Text-Alignment (kein Zeilenumbruch mehr bei 100%).
 * **Live-Monitoring:** 0.96" OLED-Display zur Anzeige von Spannung (V), Stromstärke (mA) und Leistung (mW) in Echtzeit.
-* **Intelligente Prozentanzeige:** Angepasst an Li-Ion Zellen (3.0V - 4.2V) mit integriertem Software-Low-Pass-Filter für eine absolut ruhige und flackerfreie Anzeige.
-* **Live Coulomb Counter:** Zählt präzise die eingeladenen Milliamperestunden (mAh) mit. Perfekt, um die echte Restkapazität und Gesundheit alter Akkus zu testen!
-* **Smart Status:** Automatische Erkennung von *Laden...*, *Entladen*, *Akku Voll* (CC/CV Ladeverfahren-Erkennung) und *Standby*.
+* **Heavy-Duty Smoothing:** Integrierter 95/5 Software-Low-Pass-Filter für absolut tiefenentspannte, labornetzteilartige und flackerfreie Sensorwerte. Inklusive Noise-Gate für lautlose Standby-Werte.
+* **Smarte Prozentkurve:** Keine ungenaue lineare Berechnung mehr! Die Prozentanzeige ist exakt an die nicht-lineare Entladekurve von Li-Ion Zellen (3.0V - 4.15V) angepasst.
+* **Live Coulomb Counter (Charged Cap.):** Zählt präzise die eingeladenen Milliamperestunden (mAh) mit. Perfekt, um die echte Restkapazität und Gesundheit alter Akkus zu testen!
+* **Barber-Pole Ladebalken:** Fliessend animierter, progressiver Ladebalken am unteren Bildschirmrand für sofortiges visuelles Feedback (10 FPS Refresh-Rate).
 * **OLED Paging System:** Die unteren Diagnosewerte rotieren alle 5 Sekunden butterweich, um das kleine Display übersichtlich zu halten, ohne den I2C-Bus zu blockieren.
 * **Custom Boot-Sequence:** Startet mit einem Nintendoc-Logo und einem sauberen Splash-Screen.
 * **RAM-optimiert:** Verwendet Pointers (`const char*`) und das `F()`-Makro, um den knappen SRAM (2 KB) des ATmega328P zu schonen und I2C-Crashes zu verhindern.
